@@ -8,15 +8,16 @@ from datetime import datetime
 
 def get_time():
     return str(datetime.strftime(datetime.now(), '%Y-%m-%dT%H:%M:%S')) 
-        
+
+
 class DatabaseTools:  
 
     def __init__(self):
         self.conn_string = ('Driver={SQL Server};' 
-                           'Server=%s;'
-                           'Database=%s;'
-                           'uid=%s;' 
-                           'pwd=%s') % (db.url, db.db, db.user, db.passwrd	)
+                            'Server=%s;'
+                            'Database=%s;'
+                            'uid=%s;' 
+                            'pwd=%s') % (db.url, db.db, db.user, db.passwrd	)
 
         self.conn = pyodbc.connect(self.conn_string) 
         self.conn.autocommit = True
@@ -27,24 +28,26 @@ class DatabaseTools:
         try:
             return self.conn.cursor()
         except:    
-            self.conn = pyodbc.connect(CONN_STRING) 
+            self.conn = pyodbc.connect(self.conn_string)
             self.conn.autocommit = True
             return self.conn.cursor()
 
-    def db_operation(self, DBstring):
-        print(DBstring)
+    def db_operation(self, db_string):
+        print(db_string)
         try:
-            self.cursor.execute(DBstring)
+            self.cursor.execute(db_string)
         except:
             self.get_cursor()                
-            self.cursor.execute(DBstring)
+            self.cursor.execute(db_string)
 
-    def push_value(self, vals, table, cols):
-      cols = ', '.join(cols)
-      vals = ', '.join([str(val) for val in vals])
+    def push_value(self, val, table, col=None):
+        # Assuming my schema is 2 cols:time & detector
+        col = col if col else table
+        val = str(val)
       
-      cmd = "insert into %s (timestamp, %s) values ('%s', %s)" % (table, cols, get_time(), vals)
-      self.db_operation(cmd)	
+        cmd = "insert into %s (timestamp, %s) values ('%s', %s)" % \
+              (table, col, get_time(), val)
+        self.db_operation(cmd)
       
     def __del__(self):
         self.conn.close()
