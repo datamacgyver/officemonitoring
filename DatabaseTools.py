@@ -13,11 +13,11 @@ def get_time():
 class DatabaseTools:  
 
     def __init__(self):
-        self.conn_string = ('Driver={SQL Server};' 
-                            'Server=%s;'
-                            'Database=%s;'
-                            'uid=%s;' 
-                            'pwd=%s') % (db.url, db.db, db.user, db.passwrd	)
+        self.conn_string = "DSN=proagricads;UID=%s;PWD=%s" % (db.user, db.passwrd)
+        #self.conn_string = ('DSN={proagricads};' 
+        #                    'Database=%s;'
+        #                    'uid=%s;' 
+        #                    'pwd=%s') % (db.db, db.user, db.passwrd	)
 
         self.conn = pyodbc.connect(self.conn_string) 
         self.conn.autocommit = True
@@ -39,6 +39,8 @@ class DatabaseTools:
         except:
             self.get_cursor()                
             self.cursor.execute(db_string)
+        finally:
+            self.cursor.commit()
 
     def push_value(self, val, table, col=None):
         # Assuming my schema is 2 cols:time & detector
