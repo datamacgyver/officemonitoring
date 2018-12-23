@@ -47,7 +47,7 @@ def run_update(func, top, bottom, *args):
 
 try:
     run_update(stub, stub_top, stub_bottom, 12)
-    run_update(cpu_temp, cpu_temp_top, cpu_temp_bottom, 12)
+    run_update(cpu_temp, cpu_temp_top, cpu_temp_bottom)
 except:
     send_request('cataclysm_occurred')
     raise
