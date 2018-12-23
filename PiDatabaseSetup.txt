@@ -1,0 +1,40 @@
+getting it working on the pi
+-----------------------------
+
+sudo apt-get install unixodbc unixodbc-dev freetds-dev tdsodbc
+pip3 install pyODBC
+
+Setup database details
+^^^^^^^^^^^^^^^^^^^^^^
+*on /etc/odbcinst.ini add:*
+
+[FreeTDS]
+Description=FreeTDS Driver
+Driver = /usr/lib/arm-linux-gnueabihf/odbc/libtdsodbc.so
+Setup = /usr/lib/arm-linux-gnueabihf/odbc/libtdsS.so
+UsageCount = 1
+
+[proagricads]
+Description=my dsn
+Driver=FreeTDS
+Database=environment
+Servername=proagricads
+
+*/etc/freetds/freetds.conf add:*
+
+[proagricads]
+        host = {server  address}
+        port = 1433
+        tds version = 7.0
+
+
+test script
+^^^^^^^^^^^
+import pyodbc
+cnx = pyodbc.connect("DSN=proagricads;UID=%s;PWD=%s" % (db.user, db.passwrd))
+
+cursor = cnx.cursor()
+cursor.execute("select * from {TABLENAME};")
+for row in cursor:
+  print row.Name
+  
