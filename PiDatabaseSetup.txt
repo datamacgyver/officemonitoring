@@ -37,4 +37,9 @@ cursor = cnx.cursor()
 cursor.execute("select * from {TABLENAME};")
 for row in cursor:
   print row.Name
-  
+
+settng cron job
+^^^^^^^^^^^^^^^
+crontab -e
+*/20 * * * * /usr/bin/python3 /home/pi/officemonitoring/send_updates.py
+for every 20 mins
