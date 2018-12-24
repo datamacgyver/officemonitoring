@@ -1,20 +1,21 @@
 import requests
 from monitors import stub, cpu_temp
 import db_deets
+import urllib.parse as parse
 from DatabaseTools import DatabaseTools
 
-db = DatabaseTools()
 ifttt_hook = 'https://maker.ifttt.com/trigger/%s/with/key/%s'
 
 stub_top = 12
 stub_bottom = 25
-cpu_temp_top = 30.0
+cpu_temp_top = 50.0
 cpu_temp_bottom = 20.0
 
 
-def send_request(name):
+def send_request(name, json=None):
     request = ifttt_hook % (name, db_deets.ifttt_key)
-    requests.post(request)
+    print(request)
+    requests.post(request, json=json)
 
 
 def run_update(func, top, bottom, *args):
@@ -46,10 +47,12 @@ def run_update(func, top, bottom, *args):
 
 
 try:
+    db = DatabaseTools()
     run_update(stub, stub_top, stub_bottom, 12)
     run_update(cpu_temp, cpu_temp_top, cpu_temp_bottom)
-except:
-    send_request('cataclysm_occurred')
+except Exception as E:
+    send_request('cataclysm_occurred', json={'Value1': parse.quote_plus(str(E))})
+    print('Cataclysmic error occurred. Reported to IFTTT')
     raise
     
 
