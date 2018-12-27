@@ -2,17 +2,32 @@ import subprocess
 from statistics import median
 from random import randint
 from time import sleep
+import Adafruit_DHT
 
 
 def loop_average(func):
     def wrapper_loop_average():
         results = []
         for i in range(1, 10):
-            # TODO: Handle nones. also, do we want to handle 2 returns on t/h?
+            # TODO: Handle nones.
             results.append(func())
             sleep(1)
+        print(results)
         return median(results)
     return wrapper_loop_average
+
+
+def _read_temp_humidity_sensor():
+    temp = None
+    humid = None
+    tries = 0
+    while temp is None or humid is None:
+        tries += 1
+        if tries > 5:
+            raise OSError("Can't communicate with sensor")
+        humid, temp = Adafruit_DHT.read_retry(11, 4)
+
+    return float(humid), float(temp)
 
 
 @loop_average
@@ -32,5 +47,19 @@ def cpu_temp():
     return resp  # Units are Degrees C
 
 
+@loop_average
+def room_temp():
+    _, temp = _read_temp_humidity_sensor()
+    return temp
+
+
+@loop_average
+def room_humidity():
+    humid, _ = _read_temp_humidity_sensor()
+    return humid
+
+
 if __name__ == "__main__":
     print(str(stub()))
+    print(str(room_temp()))
+    print(str(room_humidity()))
