@@ -8,7 +8,7 @@ import Adafruit_DHT
 def loop_average(func):
     def wrapper_loop_average():
         results = []
-        for i in range(1, 5):
+        for i in range(0, 5):
             # TODO: Handle nones.
             results.append(func())
             sleep(1)

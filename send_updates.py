@@ -57,10 +57,7 @@ try:
     run_update('room_temp', room_temp_top, room_temp_bottom)
     run_update('room_humidity', room_humidity_top, room_humidity_bottom)
 except Exception as E:
-    send_request('cataclysm_occurred', json={'Value1': parse.quote_plus(str(E))})
+    send_request('cataclysm_occurred',
+                 json={'Value1': parse.quote_plus(str(E))})
     print('Cataclysmic error occurred. Reported to IFTTT')
     raise
-    
-
-
-
