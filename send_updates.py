@@ -1,7 +1,6 @@
 import requests
-import monitors
 import db_deets
-import limits
+import variables
 import urllib.parse as parse
 from DatabaseTools import DatabaseTools
 
@@ -29,9 +28,8 @@ def run_update(variable, *args):
     None
 
     """
-    func = getattr(monitors, variable)
-    limit = getattr(limits, variable)  # TODO: bundle with the above?
-    val = func(*args)
+    limit = getattr(variables, variable)  # TODO: bundle with the above?
+    val = limit['func'](*args)
     db.push_value(val, variable)
     if val > limit['top']:
         send_request(variable + '_above_max')
