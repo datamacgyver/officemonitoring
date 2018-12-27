@@ -14,7 +14,7 @@ cpu_temp_bottom = 20.0
 
 def send_request(name, json=None):
     request = ifttt_hook % (name, db_deets.ifttt_key)
-    print(request)
+    # print(request)
     requests.post(request, json=json)
 
 
@@ -48,7 +48,7 @@ def run_update(func, top, bottom, *args):
 
 try:
     db = DatabaseTools()
-    run_update(stub, stub_top, stub_bottom, 12)
+    run_update(stub, stub_top, stub_bottom)
     run_update(cpu_temp, cpu_temp_top, cpu_temp_bottom)
 except Exception as E:
     send_request('cataclysm_occurred', json={'Value1': parse.quote_plus(str(E))})
