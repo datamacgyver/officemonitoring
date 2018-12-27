@@ -1,0 +1,8 @@
+Two tings left: Control Hive and detect if I'm there.
+
+detect if I'm there.
+Few things that are needed
+1) variable top/bottoms depenidng on a condition
+2) way to detect that condition
+
+I say iteration 1 should be to use time to change the temp.

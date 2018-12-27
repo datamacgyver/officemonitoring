@@ -30,7 +30,7 @@ def run_update(variable, *args):
 
     """
     func = getattr(monitors, variable)
-    limit = getattr(limits, variable)
+    limit = getattr(limits, variable)  # TODO: bundle with the above?
     val = func(*args)
     db.push_value(val, variable)
     if val > limit['top']:
