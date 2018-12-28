@@ -4,8 +4,8 @@ from ics import Calendar
 import requests    # Alternative: use requests
 from db_deets import calendar_url
 
-day_start = 6
-day_end = 18
+day_start = 6  # am
+day_end = 18  # pm
 
 hour_now = int(datetime.strftime(datetime.now(), '%H'))
 weekday_now = datetime.today().weekday()
@@ -17,6 +17,8 @@ is_day = (hour_now >= day_start) and (hour_now <= day_end)
 is_week = weekday_now < 5  # 0 is monday
 
 in_the_office = is_day and is_week and not in_london
+
+print("Is rob in his office? %s" % in_the_office)
 
 
 stub = {
