@@ -13,13 +13,8 @@ def get_time():
 class DatabaseTools:  
 
     def __init__(self):
-        self.conn_string = "DSN=proagricads;UID=%s;PWD=%s" % (db.user, db.passwrd)
-        #self.conn_string = ('DSN={proagricads};' 
-        #                    'Database=%s;'
-        #                    'uid=%s;' 
-        #                    'pwd=%s') % (db.db, db.user, db.passwrd	)
-
-        self.conn = pyodbc.connect(self.conn_string) 
+        self.conn_str = "DSN=proagricads;UID=%s;PWD=%s" % (db.user, db.passwrd)
+        self.conn = pyodbc.connect(self.conn_str)
         self.conn.autocommit = True
         self.cursor = self.conn.cursor()
         print('Connected to database')
@@ -28,7 +23,7 @@ class DatabaseTools:
         try:
             return self.conn.cursor()
         except:    
-            self.conn = pyodbc.connect(self.conn_string)
+            self.conn = pyodbc.connect(self.conn_str)
             self.conn.autocommit = True
             return self.conn.cursor()
 
