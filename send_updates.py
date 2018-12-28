@@ -3,6 +3,8 @@ import db_deets
 import urllib.parse as p
 from DatabaseTools import DatabaseTools
 
+# TODO: Add a push to a table that contains only the most recent of each variable so i can query quicker.
+
 ifttt_hook = 'https://maker.ifttt.com/trigger/%s/with/key/%s'
 
 

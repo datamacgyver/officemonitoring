@@ -19,6 +19,10 @@ is_week = weekday_now < 5  # 0 is monday
 in_the_office = is_day and is_week and not in_london
 
 print("Is rob in his office? %s" % in_the_office)
+print("in_london %s" % in_london)
+print("is_day %s" % is_day)
+print("is_week %s" % is_week)
+
 
 
 stub = {
