@@ -1,6 +1,8 @@
 import pyodbc
-from logons import db_passwrd, db_user, db_dsn
 from datetime import datetime
+
+from secure.logons import db_passwrd, db_user, db_dsn
+
 
 # TODO: Proper excepts
 # TODO: try/catches for failed pushes. What behaviour? . 

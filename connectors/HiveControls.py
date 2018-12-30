@@ -1,7 +1,8 @@
-import requests
-from logons import hive_user, hive_password
-from hive_ids import actions
 import json
+import requests
+
+from secure.logons import hive_user, hive_password
+from secure.hive_ids import actions
 
 
 def get_access_token():

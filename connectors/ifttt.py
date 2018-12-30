@@ -1,5 +1,5 @@
 import requests
-import logons
+from secure import logons
 
 ifttt_hook = 'https://maker.ifttt.com/trigger/%s/with/key/%s'
 

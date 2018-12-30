@@ -1,15 +1,18 @@
 import urllib.parse as p
+
 from connectors.DatabaseTools import DatabaseTools
-import variables
-from connectors.ifttt import send_request
 from connectors.HiveControls import HiveControls
+from connectors.ifttt import send_request
+from sensors import limits
+
 # TODO: push to a table that contains only the most recent of each variable
+# TODO: Add example secure files to secure folder.
 
 hive = HiveControls()
 
 
 def run_update(variable, db, *args):
-    limit = getattr(variables, variable)
+    limit = getattr(limits, variable)
     val = limit['func'](*args)
     db.push_value(val, variable)
     if val > limit['top']:
@@ -22,7 +25,7 @@ def run_update(variable, db, *args):
 
 def main():
     try:
-        import variables
+        import sensors.limits
         db = DatabaseTools()
         run_update('stub', db)
         run_update('cpu_temp', db)

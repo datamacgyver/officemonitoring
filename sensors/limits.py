@@ -1,9 +1,10 @@
 from datetime import datetime
-from ics import Calendar
 import requests
-import monitors as m
-from logons import calendar_url
-from hive_ids import actions
+from ics import Calendar
+
+from secure.logons import calendar_url
+from secure.hive_ids import actions
+from sensors import monitors as m
 from connectors import ifttt
 
 
