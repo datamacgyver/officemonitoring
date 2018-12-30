@@ -1,7 +1,10 @@
-from ifttt import send_request
 import urllib.parse as p
+
 from DatabaseTools import DatabaseTools
+
 import variables
+from connectors.ifttt import send_request
+
 
 # TODO: push to a table that contains only the most recent of each variable
 
