@@ -1,5 +1,5 @@
 import requests
-import db_deets as db
+from logons import hive_user, hive_password
 import json
 
 
@@ -11,7 +11,7 @@ def get_access_token():
               "\"devices\": true, " \
               "\"products\": true, " \
               "\"actions\": true, " \
-              "\"homes\": true}" % (db.hive_user, db.hive_password)
+              "\"homes\": true}" % (hive_user, hive_password)
     headers = {
         'Content-Type': "application/json",
         'cache-control': "no-cache",

@@ -1,28 +1,28 @@
 from datetime import datetime
-import monitors as m
 from ics import Calendar
-import requests    # Alternative: use requests
-from db_deets import calendar_url
+import requests
+import monitors as m
+from logons import calendar_url
 
-day_start = 6  # am
-day_end = 18  # pm
 
-hour_now = int(datetime.strftime(datetime.now(), '%H'))
-weekday_now = datetime.today().weekday()
-date_now = datetime.today().date()
-c = Calendar(requests.get(calendar_url).text)
+def check_in_office(day_start=6, day_end=18, weekday_start=0, weekday_end=4):
+    c = Calendar(requests.get(calendar_url).text)
 
-in_london = any([event.begin.date() == date_now for event in c.events])
-is_day = (hour_now >= day_start) and (hour_now <= day_end)
-is_week = weekday_now < 5  # 0 is monday
+    hour_now = int(datetime.strftime(datetime.now(), '%H'))
+    weekday_now = datetime.today().weekday()
+    date_now = datetime.today().date()
 
-in_the_office = is_day and is_week and not in_london
+    in_london = any([event.begin.date() == date_now for event in c.events])
+    is_day = (hour_now >= day_start) and (hour_now <= day_end)
+    is_week = (weekday_now <= weekday_end) and (weekday_now >= weekday_start)
 
-print("Is rob in his office? %s" % in_the_office)
-# print("in_london %s" % in_london)
-# print("is_day %s" % is_day)
-# print("is_week %s" % is_week)
+    check_result = is_day and is_week and not in_london
+    print("Is rob in his office? %s" % check_result)
 
+    return check_result
+
+
+in_the_office = check_in_office()
 
 
 stub = {
@@ -50,4 +50,7 @@ room_humidity = {
 }
 
 if __name__ == "__main__":
+    print(stub)
+    print(cpu_temp)
     print(room_temp)
+    print(room_humidity)

@@ -1,5 +1,5 @@
 import pyodbc
-import db_deets as db
+import logons as db
 from datetime import datetime
 
 # TODO: Proper excepts
