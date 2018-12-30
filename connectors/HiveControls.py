@@ -1,12 +1,19 @@
 import json
-import requests
+import certifi
+import urllib3
 
 from secure.logons import hive_user, hive_password
 from secure.hive_ids import actions
 
+http = urllib3.PoolManager(
+    cert_reqs='CERT_REQUIRED',
+    ca_certs=certifi.where())
+make_req = http.request
+# make_req = requests.request
+
 
 def get_access_token():
-    url = "http://beekeeper.hivehome.com/1.0/global/login"
+    url = "https://beekeeper.hivehome.com/1.0/global/login"
 
     payload = "{\"username\": \"%s\", " \
               "\"password\": \"%s\", " \
@@ -20,9 +27,10 @@ def get_access_token():
         'Postman-Token': "1a8d9050-f7ae-4246-9afe-6dae9baddb2e"
     }
 
-    response = requests.request("POST", url, data=payload,
-                                headers=headers, verify=False)
-    response = json.loads(response.text)
+    response = make_req("POST", url, body=payload,
+                        headers=headers)  # , verify=False)
+    response = response.data
+    response = json.loads(response)
     return response['token']
 
 
@@ -36,7 +44,7 @@ class HiveControls:
         if uid is None:
             return
 
-        url = "http://beekeeper-uk.hivehome.com/1.0/actions/%s/quick-action"
+        url = "https://beekeeper-uk.hivehome.com/1.0/actions/%s/quick-action"
         url = url % uid
 
         payload = ""
@@ -47,11 +55,11 @@ class HiveControls:
             'Postman-Token': "bea4fb4d-be78-4b87-bea3-666f23fd1df5"
         }
 
-        requests.request("POST", url, data=payload,
-                         headers=headers, verify=False)
+        make_req("POST", url, body=payload,
+                 headers=headers)  # , verify=False)
 
     def logout(self):
-        url = "http://beekeeper-uk.hivehome.com/1.0/auth/logout"
+        url = "https://beekeeper-uk.hivehome.com/1.0/auth/logout"
 
         payload = ""
         headers = {
@@ -69,8 +77,8 @@ class HiveControls:
             'Postman-Token': "55ac7403-68fc-460e-9099-8728ecee5970"
         }
 
-        requests.request("OPTIONS", url, data=payload,
-                         headers=headers, verify=False)
+        make_req("OPTIONS", url, body=payload,
+                 headers=headers)  # , verify=False)
 
         payload = "{}"
         headers = {
@@ -90,8 +98,8 @@ class HiveControls:
             'Postman-Token': "94e2dd8b-2619-4909-a666-c491a0a18a29"
         }
 
-        requests.request("DELETE", url, data=payload,
-                         headers=headers, verify=False)
+        make_req("DELETE", url, body=payload,
+                 headers=headers)  # , verify=False)
 
     def get_token(self):
         return self.token

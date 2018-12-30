@@ -5,7 +5,6 @@ from ics import Calendar
 from secure.logons import calendar_url
 from secure.hive_ids import actions
 from sensors import monitors as m
-from connectors import ifttt
 
 
 def check_in_office(day_start=6, day_end=18, weekday_start=0, weekday_end=4):
@@ -37,10 +36,10 @@ stub = {
 }
 
 cpu_temp = {
-    'top': 50.0,
-    'bottom': 20.0,
+    'top': 55.0,
+    'bottom': 5.0,
     'func': m.cpu_temp,
-    'above_action': ifttt.action_notification('cpu_temp_above_max'),
+    'above_action': None,
     'below_action': None
 }
 

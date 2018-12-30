@@ -3,13 +3,12 @@ from connectors.HiveControls import HiveControls
 from connectors.ifttt import action_notification, error_notification
 from sensors import limits
 
+# TODO: Verify=True in requests
+# TODO: What do None's do in monitor loop? Should make it raise?
+# TODO: Proper excepts in DB tools. try/catches for failed pushes. What to do?
 # TODO: push to a table that contains only the most recent of each variable
 # TODO: Add example secure files to secure folder.
-# TODO: Verify=True in requests
-# TODO: Proper excepts in DB tools. try/catches for failed pushes. What to do?
 # TODO: logoff in class delete not working in Hive Controls
-# TODO: What do None's do in monitor loop? Should make it raise?
-# TODO: Example secure files.
 
 hive = HiveControls()
 
@@ -30,7 +29,7 @@ def main():
     try:
         import sensors.limits
         db = DatabaseTools()
-        run_update('stub', db)
+        # run_update('stub', db)
         run_update('cpu_temp', db)
         run_update('room_temp', db)
         run_update('room_humidity', db)
