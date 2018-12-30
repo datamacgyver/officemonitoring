@@ -1,5 +1,6 @@
 import requests
-from logons import hive_user, hive_password, actions
+from logons import hive_user, hive_password
+from hive_ids import actions
 import json
 
 
@@ -31,6 +32,9 @@ class HiveControls:
         # print(self.token)
 
     def run_action(self, uid):
+        if uid is None:
+            return
+
         url = "http://beekeeper-uk.hivehome.com/1.0/actions/%s/quick-action"
         url = url % uid
 
@@ -91,8 +95,12 @@ class HiveControls:
     def get_token(self):
         return self.token
 
-    # def __del__(self):
-    #     logout()
+    def __del__(self):
+        try:
+            self.logout()
+        except ImportError:
+            print('Unable to logout as Python is shutting down')  # TODO: fix
+            pass
 
 
 if __name__ == "__main__":

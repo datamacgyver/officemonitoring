@@ -2,9 +2,10 @@ import urllib.parse as p
 from connectors.DatabaseTools import DatabaseTools
 import variables
 from connectors.ifttt import send_request
-
-
+from connectors.HiveControls import HiveControls
 # TODO: push to a table that contains only the most recent of each variable
+
+hive = HiveControls()
 
 
 def run_update(variable, db, *args):
@@ -13,8 +14,10 @@ def run_update(variable, db, *args):
     db.push_value(val, variable)
     if val > limit['top']:
         send_request(variable + '_above_max')
+        hive.run_action(limit['above_action'])
     elif val < limit['bottom']:
         send_request(variable + '_below_min')
+        hive.run_action(limit['above_action'])
 
 
 def main():
@@ -30,6 +33,8 @@ def main():
         send_request('cataclysm_occurred', json={'Value1': msg})
         print('Cataclysmic error occurred. Reported to IFTTT')
         raise
+    finally:
+        hive.logout()
 
 
 if __name__ == "__main__":

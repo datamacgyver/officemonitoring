@@ -3,6 +3,8 @@ from ics import Calendar
 import requests
 import monitors as m
 from logons import calendar_url
+from hive_ids import actions
+from connectors import ifttt
 
 
 def check_in_office(day_start=6, day_end=18, weekday_start=0, weekday_end=4):
@@ -28,25 +30,33 @@ in_the_office = check_in_office()
 stub = {
     'top': 12.0,
     'bottom': 25.0,
-    'func': m.stub
+    'func': m.stub,
+    'above_action': None,
+    'below_action': None
 }
 
 cpu_temp = {
     'top': 50.0,
     'bottom': 20.0,
-    'func': m.cpu_temp
+    'func': m.cpu_temp,
+    'above_action': ifttt.send_request('cpu_temp_above_max'),
+    'below_action': None
 }
 
 room_temp = {
     'top': 19.0 if in_the_office else 5.0,
     'bottom': 3.0 if in_the_office else 16.0,
-    'func': m.room_temp
+    'func': m.room_temp,
+    'below_action': actions['shed_heater_on'],
+    'above_action': None
 }
 
 room_humidity = {
     'top': 1.0 if in_the_office else 65.0,  # On if I'm in
     'bottom': 0.0,
-    'func': m.room_humidity
+    'func': m.room_humidity,
+    'below_action': None,
+    'above_action': actions['shed_humidifier_on']
 }
 
 if __name__ == "__main__":

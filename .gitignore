@@ -106,3 +106,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 logons.py
+hive_ids.py

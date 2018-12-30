@@ -1,5 +1,5 @@
 import pyodbc
-import logons as db
+from logons import db_passwrd, db_user, db_dsn
 from datetime import datetime
 
 # TODO: Proper excepts
@@ -10,10 +10,9 @@ def get_time():
     return str(datetime.strftime(datetime.now(), '%Y-%m-%dT%H:%M:%S')) 
 
 
-class DatabaseTools:  
-
+class DatabaseTools:
     def __init__(self):
-        self.conn_str = "DSN=proagricads;UID=%s;PWD=%s" % (db.user, db.passwrd)
+        self.conn_str = "DSN=%s;UID=%s;PWD=%s" % (db_dsn, db_user, db_passwrd)
         self.conn = pyodbc.connect(self.conn_str)
         self.conn.autocommit = True
         self.cursor = self.conn.cursor()
