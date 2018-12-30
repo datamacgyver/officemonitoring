@@ -40,7 +40,7 @@ cpu_temp = {
     'top': 50.0,
     'bottom': 20.0,
     'func': m.cpu_temp,
-    'above_action': ifttt.send_request('cpu_temp_above_max'),
+    'above_action': ifttt.action_notification('cpu_temp_above_max'),
     'below_action': None
 }
 
