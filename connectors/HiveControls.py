@@ -1,5 +1,5 @@
 import requests
-from logons import hive_user, hive_password
+from logons import hive_user, hive_password, actions
 import json
 
 
@@ -28,7 +28,7 @@ class HiveControls:
 
     def __init__(self):
         self.token = get_access_token()
-        print(self.token)
+        # print(self.token)
 
     def run_action(self, uid):
         url = "http://beekeeper-uk.hivehome.com/1.0/actions/%s/quick-action"
@@ -42,10 +42,8 @@ class HiveControls:
             'Postman-Token': "bea4fb4d-be78-4b87-bea3-666f23fd1df5"
         }
 
-        response = requests.request("POST", url, data=payload,
-                                    headers=headers, verify=False)
-
-        print(response.text)
+        requests.request("POST", url, data=payload,
+                         headers=headers, verify=False)
 
     def logout(self):
         url = "http://beekeeper-uk.hivehome.com/1.0/auth/logout"
@@ -99,5 +97,5 @@ class HiveControls:
 
 if __name__ == "__main__":
     hive = HiveControls()
-    hive.run_action('54c65147-2848-4b50-bc56-32e62ed96777')
+    hive.run_action(actions['shed_heater_on'])
     hive.logout()

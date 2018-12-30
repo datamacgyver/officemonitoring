@@ -1,7 +1,5 @@
 import urllib.parse as p
-
-from DatabaseTools import DatabaseTools
-
+from connectors.DatabaseTools import DatabaseTools
 import variables
 from connectors.ifttt import send_request
 
