@@ -56,7 +56,7 @@ room_humidity = {
     'bottom': 0.0,
     'func': m.room_humidity,
     'below_action': None,
-    'above_action': actions['shed_humidifier_on']
+    'above_action': None if in_the_office else actions['shed_humidifier_on']
 }
 
 if __name__ == "__main__":
