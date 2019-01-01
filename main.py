@@ -3,7 +3,6 @@ from connectors.HiveControls import HiveControls
 from connectors.ifttt import action_notification, error_notification
 from sensors import limits
 
-# TODO: Verify=True in requests
 # TODO: What do None's do in monitor loop? Should make it raise?
 # TODO: Proper excepts in DB tools. try/catches for failed pushes. What to do?
 # TODO: push to a table that contains only the most recent of each variable

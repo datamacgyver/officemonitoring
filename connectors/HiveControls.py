@@ -12,7 +12,7 @@ make_req = http.request
 # make_req = requests.request
 
 
-def get_access_token():
+def get_sign_on():
     url = "https://beekeeper.hivehome.com/1.0/global/login"
 
     payload = "{\"username\": \"%s\", " \
@@ -30,15 +30,20 @@ def get_access_token():
     response = make_req("POST", url, body=payload,
                         headers=headers)  # , verify=False)
     response = response.data
-    response = json.loads(response)
-    return response['token']
+    return json.loads(response)
 
 
 class HiveControls:
 
     def __init__(self):
-        self.token = get_access_token()
-        # print(self.token)
+        self.response = get_sign_on()
+        self.token = self.response['token']
+
+    def get_actions(self):
+        return self.response['actions']
+
+    def get_devices(self):
+        return self.response['devices']
 
     def run_action(self, uid):
         if uid is None:
@@ -115,4 +120,6 @@ class HiveControls:
 if __name__ == "__main__":
     hive = HiveControls()
     hive.run_action(actions['shed_heater_on'])
+    print(hive.get_actions())
+    print(hive.get_devices())
     hive.logout()
