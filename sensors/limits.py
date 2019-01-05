@@ -3,7 +3,6 @@ import requests
 from ics import Calendar
 
 from secure.logons import calendar_url
-from secure.hive_ids import actions
 from sensors import monitors as m
 
 
@@ -47,7 +46,7 @@ room_temp = {
     'top': 19.0 if in_the_office else 5.0,
     'bottom': 3.0 if in_the_office else 16.0,
     'func': m.room_temp,
-    'below_action': actions['shed_heater_on'],
+    'below_action': 'shed heater on',
     'above_action': None
 }
 
@@ -56,7 +55,7 @@ room_humidity = {
     'bottom': 0.0,
     'func': m.room_humidity,
     'below_action': None,
-    'above_action': None if in_the_office else actions['shed_humidifier_on']
+    'above_action': None if in_the_office else 'shed humidifier on'
 }
 
 if __name__ == "__main__":

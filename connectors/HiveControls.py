@@ -3,7 +3,6 @@ import certifi
 import urllib3
 
 from secure.logons import hive_user, hive_password
-from secure.hive_ids import actions
 
 http = urllib3.PoolManager(
     cert_reqs='CERT_REQUIRED',
@@ -45,7 +44,7 @@ class HiveControls:
     def get_devices(self):
         return self.response['devices']
 
-    def run_action(self, uid):
+    def run_action_by_uid(self, uid):
         if uid is None:
             print("No associated Hive action")
             return
@@ -65,6 +64,13 @@ class HiveControls:
                         headers=headers)  # , verify=False)
         print('Action %s complete. Response: %s' %
               (uid, resp.data.decode('utf-8')))
+
+    def run_action_by_name(self, name):
+        name = name.lower()
+        actions = self.get_actions()
+        action = [x for x in actions if x['name'].lower() == name][0]
+        uid = action['id']
+        self.run_action_by_uid(uid)
 
     def logout(self):
         url = "https://beekeeper-uk.hivehome.com/1.0/auth/logout"
@@ -124,7 +130,8 @@ class HiveControls:
 
 if __name__ == "__main__":
     hive = HiveControls()
-    hive.run_action(actions['shed_heater_on'])
+    # hive.run_action_by_uid(actions['shed_heater_on'])
+    hive.run_action_by_name('shed heater on')
     print(hive.get_actions())
     print(hive.get_devices())
     hive.logout()
