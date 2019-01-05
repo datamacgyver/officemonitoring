@@ -12,6 +12,9 @@ def loop_average(func):
             # TODO: Handle nones.
             results.append(func())
             sleep(1)
+        results = [x for x in results if x is not None]
+        if len(results) < 3:
+            raise IOError('Sensor returned more than 2 errors')
         print(results)
         return median(results)
     return wrapper_loop_average
