@@ -29,7 +29,7 @@ def get_sign_on():
 
     response = make_req("POST", url, body=payload,
                         headers=headers)  # , verify=False)
-    response = response.data
+    response = response.data.decode('utf-8')
     return json.loads(response)
 
 
@@ -63,8 +63,8 @@ class HiveControls:
 
         resp = make_req("POST", url, body=payload,
                         headers=headers)  # , verify=False)
-        print(str(resp.data))
-        print('Action %s complete' % uid)
+        print('Action %s complete. Response: %s' %
+              (uid, resp.data.decode('utf-8')))
 
     def logout(self):
         url = "https://beekeeper-uk.hivehome.com/1.0/auth/logout"
