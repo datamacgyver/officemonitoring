@@ -17,9 +17,11 @@ def run_update(variable, db, *args):
     val = limit['func'](*args)
     db.push_value(val, variable)
     if val > limit['top']:
+        print("%s above acceptable limit: %s" % (variable, limit['top']))
         action_notification(variable=variable, reading=val)
         hive.run_action(limit['above_action'])
     elif val < limit['bottom']:
+        print("%s below acceptable limit: %s" % (variable, limit['bottom']))
         action_notification(variable=variable, reading=val)
         hive.run_action(limit['above_action'])
 
@@ -28,9 +30,9 @@ def main():
     try:
         import sensors.limits
         db = DatabaseTools()
-        # run_update('stub', db)
-        run_update('cpu_temp', db)
+        run_update('stub', db)
         run_update('room_temp', db)
+        run_update('cpu_temp', db)
         run_update('room_humidity', db)
     except Exception as E:
         msg = str(E)

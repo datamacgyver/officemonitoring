@@ -47,6 +47,7 @@ class HiveControls:
 
     def run_action(self, uid):
         if uid is None:
+            print("No associated Hive action")
             return
 
         url = "https://beekeeper-uk.hivehome.com/1.0/actions/%s/quick-action"
@@ -60,8 +61,10 @@ class HiveControls:
             'Postman-Token': "bea4fb4d-be78-4b87-bea3-666f23fd1df5"
         }
 
-        make_req("POST", url, body=payload,
-                 headers=headers)  # , verify=False)
+        resp = make_req("POST", url, body=payload,
+                        headers=headers)  # , verify=False)
+        print(str(resp.data))
+        print('Action %s complete' % uid)
 
     def logout(self):
         url = "https://beekeeper-uk.hivehome.com/1.0/auth/logout"
@@ -105,16 +108,18 @@ class HiveControls:
 
         make_req("DELETE", url, body=payload,
                  headers=headers)  # , verify=False)
+        print("logged out")
 
     def get_token(self):
         return self.token
 
-    def __del__(self):
-        try:
-            self.logout()
-        except ImportError:
-            print('Unable to logout as Python is shutting down')  # TODO: fix
-            pass
+    ###### Doesn't work if python is shutting down.
+    # def __del__(self):
+    #     try:
+    #         self.logout()
+    #     except ImportError:
+    #         print('Unable to logout as Python is shutting down')  # TODO: fix
+    #         pass
 
 
 if __name__ == "__main__":
