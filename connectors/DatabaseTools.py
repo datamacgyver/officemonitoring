@@ -46,6 +46,11 @@ class DatabaseTools:
         cmd = "insert into %s (timestamp, %s) values ('%s', %s)" % \
               (table, col, get_time(), val)
         self.db_operation(cmd)
+
+    def record_hive(self, hive_command):
+        cmd = "insert into hivecommands (timestamp, %s) values ('%s', %s)" % \
+              ('command', get_time(), hive_command)
+        self.db_operation(cmd)
       
     def __del__(self):
         self.conn.close()
