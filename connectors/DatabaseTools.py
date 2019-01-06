@@ -18,7 +18,7 @@ class DatabaseTools:
         self.cursor = self.conn.cursor()
         print('Connected to database')
 
-    def get_cursor(self):
+    def _get_cursor(self):
         try:
             return self.conn.cursor()
         except:    
@@ -26,56 +26,52 @@ class DatabaseTools:
             self.conn.autocommit = True
             return self.conn.cursor()
 
-    def db_operation(self, db_string):
+    def _db_change(self, db_string):
         print(db_string)
         try:
             self.cursor.execute(db_string)
         except:
-            self.get_cursor()                
+            self._get_cursor()
             self.cursor.execute(db_string)
         finally:
             self.cursor.commit()
 
-    def db_search(self, db_string):
+    def _db_search(self, db_string):
         print(db_string)
         try:
             self.cursor.execute(db_string)
         except:
-            self.get_cursor()
+            self._get_cursor()
             self.cursor.execute(db_string)
 
-    def push_value(self, val, table, col=None):
-        # Assuming my schema is 2 cols:time & detector
+    def push_new_reading(self, val, table, col=None):
         col = col if col else table
         val = str(val)
       
         cmd = "insert into %s (timestamp, %s) values ('%s', %s)" % \
               (table, col, get_time(), val)
-        self.db_operation(cmd)
+        self._db_change(cmd)
 
-    def record_hive(self, hive_command):
+    def record_hive_command(self, hive_command):
         cmd = "insert into hivecommands (timestamp, %s) values ('%s', %s)" % \
               ('command', get_time(), hive_command)
-        self.db_operation(cmd)
+        self._db_change(cmd)
 
-    def last_recorded(self, hive_command, val):
+    def store_latest_value(self, hive_command, val):
         cmd = "select count(*) from lastrecorded where variable = '%s'" % \
               hive_command
 
-        self.db_search(cmd)
+        self._db_search(cmd)
         row_count = int(self.cursor.fetchone()[0])
 
         if row_count > 0:
-            cmd = "UPDATE lastrecorded SET " \
-                  "timestamp = '%s', reading = %s " \
-                  " WHERE variable = '%s';" % \
-                  (get_time(), val, hive_command)
-            self.db_operation(cmd)
+            cmd = "UPDATE lastrecorded SET timestamp = '%s', reading = %s " \
+                  " WHERE variable = '%s';" % (get_time(), val, hive_command)
+            self._db_change(cmd)
         else:
             cmd = "insert into lastrecorded (timestamp, variable, reading) " \
-                  "values ('%s', '%s', %s)" % \
-                  (get_time(), hive_command, val)
-            self.db_operation(cmd)
+                  "values ('%s', '%s', %s)" % (get_time(), hive_command, val)
+            self._db_change(cmd)
       
     def __del__(self):
         self.conn.close()
@@ -84,4 +80,4 @@ class DatabaseTools:
 
 if __name__ == "__main__":
     db = DatabaseTools()
-    db.last_recorded('room_temp', 0)
+    db.store_latest_value('room_temp', 0)
