@@ -53,7 +53,7 @@ class DatabaseTools:
         self._db_change(cmd)
 
     def record_hive_command(self, hive_command):
-        cmd = "insert into hivecommands (timestamp, %s) values ('%s', %s)" % \
+        cmd = "insert into hivecommands (timestamp, %s) values ('%s', '%s')" % \
               ('command', get_time(), hive_command)
         self._db_change(cmd)
 
