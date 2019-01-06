@@ -3,9 +3,7 @@ from datetime import datetime
 
 from secure.logons import db_passwrd, db_user, db_dsn
 
-
-# TODO: Proper excepts
-# TODO: try/catches for failed pushes. What behaviour? . 
+# TODO: try/catches for failed Hive actions. What behaviour?
 
 
 def get_time():
@@ -38,6 +36,14 @@ class DatabaseTools:
         finally:
             self.cursor.commit()
 
+    def db_search(self, db_string):
+        print(db_string)
+        try:
+            self.cursor.execute(db_string)
+        except:
+            self.get_cursor()
+            self.cursor.execute(db_string)
+
     def push_value(self, val, table, col=None):
         # Assuming my schema is 2 cols:time & detector
         col = col if col else table
@@ -51,7 +57,25 @@ class DatabaseTools:
         cmd = "insert into hivecommands (timestamp, %s) values ('%s', %s)" % \
               ('command', get_time(), hive_command)
         self.db_operation(cmd)
+
+    def last_recorded(self, val, variable):
+        cmd = "select count(*) from lastrecorded where variable = '%s'" % \
+               variable
+
+        self.db_search("select user_id, user_name from users")
+        row = self.cursor.fetchone()
+        if row:
+            print(row)
+
+        # cmd = "insert into lastrecorded (timestamp, %s) values ('%s', %s)" % \
+        #       ('command', get_time(), hive_command)
+        # self.db_operation(cmd)
       
     def __del__(self):
         self.conn.close()
         print('Connection Closed')
+
+
+if __name__ == "__main__":
+    db = DatabaseTools()
+    db.last_recorded(0, 'room_temp')

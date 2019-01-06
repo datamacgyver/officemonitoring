@@ -3,7 +3,6 @@ from connectors.HiveControls import HiveControls
 from connectors.ifttt import action_notification, error_notification
 from sensors import limits
 
-# TODO: What do None's do in monitor loop? Should make it raise?
 # TODO: push to a table that contains only the most recent of each variable
 # TODO: Add example secure files to secure folder.
 # TODO: logoff in class delete not working in Hive Controls
@@ -15,6 +14,7 @@ def run_update(variable, db, *args):
     limit = getattr(limits, variable)
     val = limit['func'](*args)
     db.push_value(val, variable)
+    db.last_recorded(val, variable)
 
     if val > limit['top']:
         print("%s above acceptable limit: %s" % (variable, limit['top']))
