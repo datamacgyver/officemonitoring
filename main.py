@@ -10,7 +10,7 @@ def run_update(variable, db, *args):
     limit = getattr(limits, variable)
     val = limit['func'](*args)
     db.push_new_reading(val, variable)
-    db.store_latest_value(val, variable)
+    db.store_latest_value(variable, val)
 
     if val > limit['top']:
         respond_to_above(variable, val, db, limit)
