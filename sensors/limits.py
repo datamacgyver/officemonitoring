@@ -43,7 +43,7 @@ cpu_temp = {
 }
 
 room_temp = {
-    'top': 19.0 if in_the_office else 5.0,
+    'top': 100.0,
     'bottom': 3.0 if in_the_office else 16.0,
     'func': m.room_temp,
     'below_action': 'shed heater on',
@@ -51,7 +51,7 @@ room_temp = {
 }
 
 room_humidity = {
-    'top': 1.0 if in_the_office else 65.0,  # On if I'm in
+    'top': 60.0 if in_the_office else 65.0,
     'bottom': 0.0,
     'func': m.room_humidity,
     'below_action': None,
