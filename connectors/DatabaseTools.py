@@ -58,18 +58,24 @@ class DatabaseTools:
               ('command', get_time(), hive_command)
         self.db_operation(cmd)
 
-    def last_recorded(self, val, variable):
+    def last_recorded(self, hive_command, val):
         cmd = "select count(*) from lastrecorded where variable = '%s'" % \
-               variable
+              hive_command
 
-        self.db_search("select user_id, user_name from users")
-        row = self.cursor.fetchone()
-        if row:
-            print(row)
+        self.db_search(cmd)
+        row_count = int(self.cursor.fetchone()[0])
 
-        # cmd = "insert into lastrecorded (timestamp, %s) values ('%s', %s)" % \
-        #       ('command', get_time(), hive_command)
-        # self.db_operation(cmd)
+        if row_count > 0:
+            cmd = "UPDATE lastrecorded SET " \
+                  "timestamp = '%s', reading = %s " \
+                  " WHERE variable = '%s';" % \
+                  (get_time(), val, hive_command)
+            self.db_operation(cmd)
+        else:
+            cmd = "insert into lastrecorded (timestamp, variable, reading) " \
+                  "values ('%s', '%s', %s)" % \
+                  (get_time(), hive_command, val)
+            self.db_operation(cmd)
       
     def __del__(self):
         self.conn.close()
@@ -78,4 +84,4 @@ class DatabaseTools:
 
 if __name__ == "__main__":
     db = DatabaseTools()
-    db.last_recorded(0, 'room_temp')
+    db.last_recorded('room_temp', 0)
