@@ -1,4 +1,4 @@
 pyodbc==4.0.16
 ics==0.4
-requests==2.19.1
+requests==2.20.0
 certifi==2018.8.24
