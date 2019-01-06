@@ -8,7 +8,6 @@ http = urllib3.PoolManager(
     cert_reqs='CERT_REQUIRED',
     ca_certs=certifi.where())
 make_req = http.request
-# make_req = requests.request
 
 
 def get_sign_on():

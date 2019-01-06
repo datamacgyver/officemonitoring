@@ -3,8 +3,6 @@ from connectors.HiveControls import HiveControls
 from connectors.ifttt import action_notification, error_notification
 from sensors import limits
 
-# TODO: Add example secure files to secure folder.
-
 hive = HiveControls()
 
 
@@ -15,18 +13,27 @@ def run_update(variable, db, *args):
     db.store_latest_value(val, variable)
 
     if val > limit['top']:
-        print("%s above acceptable limit: %s" % (variable, limit['top']))
-        action_notification(variable=variable, reading=val)
-        if limit['above_action'] is not None:
-            hive.run_action_by_name(limit['above_action'])
-            db.record_hive_command(limit['above_action'])
-
+        respond_to_above(variable, val, db, limit)
     elif val < limit['bottom']:
-        print("%s below acceptable limit: %s" % (variable, limit['bottom']))
-        action_notification(variable=variable, reading=val)
-        if limit['below_action'] is not None:
-            hive.run_action_by_name(limit['below_action'])
-            db.record_hive_command(limit['below_action'])
+        respond_to_below(variable, val, db, limit)
+
+
+def respond_to_above(variable, val, db, limit):
+    print("%s above acceptable limit: %s" % (variable, limit['top']))
+    action_notification(variable=variable, reading=val)
+
+    if limit['above_action'] is not None:
+        hive.run_action_by_name(limit['above_action'])
+        db.record_hive_command(limit['above_action'])
+
+
+def respond_to_below(variable, val, db, limit):
+    print("%s below acceptable limit: %s" % (variable, limit['bottom']))
+    action_notification(variable=variable, reading=val)
+
+    if limit['below_action'] is not None:
+        hive.run_action_by_name(limit['below_action'])
+        db.record_hive_command(limit['below_action'])
 
 
 def main():
