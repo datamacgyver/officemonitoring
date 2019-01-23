@@ -6,7 +6,7 @@ from secure.logons import calendar_url
 from sensors import monitors as m
 
 
-def check_in_office(day_start=6, day_end=18, weekday_start=0, weekday_end=4):
+def check_in_office(day_start=6, day_end=17, weekday_start=0, weekday_end=4):
     c = Calendar(requests.get(calendar_url).text)
 
     hour_now = int(datetime.strftime(datetime.now(), '%H'))
@@ -51,7 +51,7 @@ room_temp = {
 }
 
 room_humidity = {
-    'top': 50.0 if in_the_office else 65.0,
+    'top': 50.0 if in_the_office else 75.0,
     'bottom': 0.0,
     'func': m.room_humidity,
     'below_action': None,

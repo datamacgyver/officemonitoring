@@ -40,7 +40,7 @@ def main():
     try:
         import sensors.limits
         db = DatabaseTools()
-        run_update('stub', db)
+        # run_update('stub', db)
         run_update('room_temp', db)
         run_update('cpu_temp', db)
         run_update('room_humidity', db)
