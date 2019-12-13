@@ -1,8 +1,8 @@
 # pi setup
-## getting it working on the pi
-sudo apt-get install unixodbc unixodbc-dev freetds-dev tdsodbc
-pip3 install pyodbc
-pip3 install ics
+## getting it working on the pi  
+sudo apt-get install unixodbc unixodbc-dev freetds-dev tdsodbc python3-pip  git
+pip3 install pyodbc  
+pip3 install ics  
 
 ## Setup database details
 *on /etc/odbcinst.ini add:*
