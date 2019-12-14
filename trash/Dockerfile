@@ -14,9 +14,9 @@ Driver = /usr/lib/arm-linux-gnueabi/odbc/libtdsodbc.so\n\
 Setup = /usr/lib/arm-linux-gnueabi/odbc/libtdsS.so" >> /etc/odbcinst.ini
 
 #3. Install requirements (contains pyodbc)
-COPY ./requirements.txt /usr/src/app/requirements.txt
+COPY ../requirements.txt /usr/src/app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 #Copy and run my app
-COPY . .
+COPY .. .
 CMD [ "python", "app.py"]
