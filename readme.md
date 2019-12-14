@@ -1,40 +1,8 @@
 # pi setup
 ## getting it working on the pi  
-sudo apt-get install unixodbc unixodbc-dev freetds-dev tdsodbc python3-pip  git
-pip3 install pyodbc  
+sudo apt-get install python3-pip  git  
+pip3 install boto3   
 pip3 install ics  
-
-## Setup database details
-*on /etc/odbcinst.ini add:*
-
-[FreeTDS]
-Description=FreeTDS Driver
-Driver = /usr/lib/arm-linux-gnueabihf/odbc/libtdsodbc.so
-Setup = /usr/lib/arm-linux-gnueabihf/odbc/libtdsS.so
-UsageCount = 1
-
-[proagricads]
-Description=my dsn
-Driver=FreeTDS
-Database=environment
-Servername=proagricads
-
-*/etc/freetds/freetds.conf add:*
-
-[proagricads]
-        host = {server  address}
-        port = 1433
-        tds version = 7.0
-
-
-## test script
-import pyodbc
-cnx = pyodbc.connect("DSN=proagricads;UID=%s;PWD=%s" % (user, passwrd))
-
-cursor = cnx.cursor()
-cursor.execute("select * from {TABLENAME};")
-for row in cursor:
-  print row.Name
 
 ## settng cron job
 crontab -e

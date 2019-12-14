@@ -1,8 +1,10 @@
-db_user = ''
-db_passwrd = ''
-db_dsn = ''
+s3_bucket = ''
+
+s3_key = ''
+s3_secret = ''
 
 ifttt_key = ''
+
 
 hive_user = ""
 hive_password = ""
