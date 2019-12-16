@@ -15,9 +15,7 @@ This is done in C but the package below wraps that up for you (phew!)
 git clone https://github.com/adafruit/Adafruit_Python_DHT.git
 sudo python3 setup.py install
 
-for C code (and wiring) check here:
-http://www.circuitbasics.com/how-to-set-up-the-dht11-humidity-sensor-on-the-raspberry-pi/
-
+for C code (and wiring) check [here](http://www.circuitbasics.com/how-to-set-up-the-dht11-humidity-sensor-on-the-raspberry-pi/)
 
 # Connecting to Hive
 ## First try with t'internet
