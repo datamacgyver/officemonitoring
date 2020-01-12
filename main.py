@@ -28,7 +28,7 @@ def run_update(variable_name, *args):
         push_new_reading(val, variable_name)
 
     # What do we need to do given the output?
-    if val > variable_setting['upper']:
+    if val >= variable_setting['upper']:
         _respond_to_above(variable_name, val, variable_setting)
     elif val < variable_setting['lower']:
         _respond_to_below(variable_name, val, variable_setting)
