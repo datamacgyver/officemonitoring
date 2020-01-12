@@ -25,8 +25,11 @@ def motion(pin_no=25, events_needed=1, num_seconds=60):
     return 0
 
 
-def loop_average(*args, num_loops=5, failure_boundary=0.60):
-    def wrapper_loop_average(func):
+def loop_average(func):
+    def wrapper_loop_average():
+        num_loops = 5
+        failure_boundary = 0.60
+
         results = []
         for i in range(0, num_loops):
             results.append(func())
