@@ -22,7 +22,7 @@ def run_update(variable_name, *args):
     val = variable_setting['func'](*args)
 
     # Do we need to record the output?
-    update_rule = variable_setting['record_outcome'].tolower()
+    update_rule = variable_setting['record_outcome'].lower()
     if update_rule == 'always':
         push_new_reading(val, variable_name)
     elif update_rule == 'if true' and val:
@@ -35,6 +35,8 @@ def run_update(variable_name, *args):
         _run_action(variable_name, val, variable_setting, 'above')
     elif val < variable_setting['lower']:
         _run_action(variable_name, val, variable_setting, 'below')
+    
+    print("Finished %s" % variable_name)
 
 
 def _run_action(variable, val, limit, typ):
