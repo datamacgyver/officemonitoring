@@ -6,6 +6,25 @@ import Adafruit_DHT
 import RPi.GPIO as GPIO
 
 
+def movement(pin_no=25, events_needed=1, num_seconds=60):
+
+    try:
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setup(pin_no, GPIO.IN)
+
+        events = 0
+        for i in range(0, num_seconds):
+            sleep(1)
+            events += GPIO.input(pin_no)
+            if events >= events_needed:
+                return 1
+    finally:
+        GPIO.cleanup()
+
+    return 0
+
+
 def loop_average(*args, num_loops=5, failure_boundary=0.60):
     def wrapper_loop_average(func):
         results = []
@@ -36,25 +55,6 @@ def _read_temp_humidity_sensor(pin_no=4):
         humid, temp = Adafruit_DHT.read_retry(11, pin_no)
 
     return float(humid), float(temp)
-
-
-def movement(pin_no=25, events_needed=1, num_seconds=60):
-
-    try:
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
-        GPIO.setup(pin_no, GPIO.IN)
-
-        events = 0
-        for i in range(0, num_seconds):
-            sleep(1)
-            events += GPIO.input(pin_no)
-            if events >= events_needed:
-                return 1
-    finally:
-        GPIO.cleanup()
-
-    return False
 
 
 @loop_average
