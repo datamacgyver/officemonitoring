@@ -6,18 +6,22 @@ import Adafruit_DHT
 import RPi.GPIO as GPIO
 
 
-def loop_average(func): # todo move func to inner, add *args, **kwargs and parameterise important loop bits
-    def wrapper_loop_average():
+def loop_average(*args, num_loops=5, failure_boundary=0.60):
+    def wrapper_loop_average(func):
         results = []
-        for i in range(0, 5):
-            # TODO: Handle nones.
+        for i in range(0, num_loops):
             results.append(func())
             sleep(1)
+
         results = [x for x in results if x is not None]
-        if len(results) < 3:
-            raise IOError('Sensor returned more than 2 errors')
-        print(results)
-        return median(results)
+        percent_success = len(results) / num_loops
+        if percent_success < failure_boundary:
+            raise IOError('Sensor returned more than %s%% errors over %s runs' %
+                          (percent_success * 100, num_loops))
+
+        print("Results from all sensor runs: %s" % results)
+        return median(results)  # TODO: Choose average?
+
     return wrapper_loop_average
 
 
@@ -34,7 +38,7 @@ def _read_temp_humidity_sensor(pin_no=4):
     return float(humid), float(temp)
 
 
-def movement(pin_no=25, events_needed=1, num_seconds=60): # TODO: Adjust decorator and use with this too?
+def movement(pin_no=25, events_needed=1, num_seconds=60):
 
     try:
         GPIO.setmode(GPIO.BCM)
