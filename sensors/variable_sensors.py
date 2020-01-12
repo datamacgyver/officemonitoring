@@ -6,7 +6,7 @@ import Adafruit_DHT
 import RPi.GPIO as GPIO
 
 
-def movement(pin_no=25, events_needed=1, num_seconds=60):
+def motion(pin_no=25, events_needed=1, num_seconds=60):
 
     try:
         GPIO.setmode(GPIO.BCM)

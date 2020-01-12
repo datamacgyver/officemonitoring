@@ -10,8 +10,13 @@ def _get_time_diff(var):
 
 
 def needs_to_run(var, min_diff):
-    diff = _get_time_diff(var)
-    if diff > min_diff:
+
+    try:
+        diff = _get_time_diff(var)
+    except FileNotFoundError:
+        return True
+
+    if int(diff) > min_diff:
         return True
     else:
         return False
