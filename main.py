@@ -1,14 +1,13 @@
 from connectors.s3 import push_new_reading, record_hive_command
 from connectors.HiveControls import HiveControls
 from connectors.ifttt import action_notification, error_notification
-from sensors.frequency_checks import needs_to_run, mark_ran
+from sensors.frequency_checks import needs_to_run, note_this_run
 from sensors import variable_settings
 
 hive = HiveControls()
 
 
 def run_update(variable_name, *args):
-    print('Running %s' % variable_name)
     variable_setting = getattr(variable_settings, variable_name)
 
     # Do we need to run variable?
@@ -16,7 +15,11 @@ def run_update(variable_name, *args):
         print('Insufficient time since last check! Aborting %s' % variable_name)
         return
     else:
-        val = variable_setting['func'](*args)
+        note_this_run(variable_name)
+        print('Running %s' % variable_name)
+
+    # Make observation
+    val = variable_setting['func'](*args)
 
     # Do we need to record the output?
     update_rule = variable_setting['record_outcome'].tolower()
@@ -29,30 +32,26 @@ def run_update(variable_name, *args):
 
     # What do we need to do given the output?
     if val >= variable_setting['upper']:
-        _respond_to_above(variable_name, val, variable_setting)
+        _run_action(variable_name, val, variable_setting, 'above')
     elif val < variable_setting['lower']:
-        _respond_to_below(variable_name, val, variable_setting)
-
-    # Mark date of last run
-    mark_ran(variable_name)
+        _run_action(variable_name, val, variable_setting, 'below')
 
 
-def _respond_to_above(variable, val, limit):
-    print("%s above acceptable limit: %s" % (variable, limit['upper']))
-    action_notification(variable=variable, reading=val)
+def _run_action(variable, val, limit, typ):
+    if typ == 'below':
+        limit_val = limit['lower']
+        action = limit['below_action']
+    elif typ == 'above':
+        limit_val = limit['upper']
+        action = limit['above_action']
+    else:
+        raise ValueError("typ must be above or below, not %s" % typ)
 
-    if limit['above_action'] is not None:
-        hive.run_action_by_name(limit['above_action'])
-        record_hive_command(limit['above_action'])
-
-
-def _respond_to_below(variable, val, limit):
-    print("%s below acceptable limit: %s" % (variable, limit['lower']))
-    action_notification(variable=variable, reading=val)
-
-    if limit['below_action'] is not None:
-        hive.run_action_by_name(limit['below_action'])
-        record_hive_command(limit['below_action'])
+    if action is not None:
+        print("%s above acceptable limit: %s" % (variable, limit_val))
+        action_notification(variable=variable, reading=val)
+        hive.run_action_by_name(action)
+        record_hive_command(action)
 
 
 def main():

@@ -17,7 +17,7 @@ def needs_to_run(var, min_diff):
         return False
 
 
-def mark_ran(var):
+def note_this_run(var):
     now = datetime.now()
     with open(var+'.timer', 'w') as f:
         return f.write(str(now))
