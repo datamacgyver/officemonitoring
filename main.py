@@ -1,25 +1,25 @@
 from connectors.s3 import push_new_reading, record_hive_command
 from connectors.HiveControls import HiveControls
 from connectors.ifttt import action_notification, error_notification
-from sensors import limits
+from sensors import variable_settings
 
 hive = HiveControls()
 
 
-def run_update(variable, *args):
-    limit = getattr(limits, variable)
-    val = limit['func'](*args)
-    push_new_reading(val, variable)
-    # store_latest_value(variable, val)
+def run_update(variable_name, *args):
+    variable_setting = getattr(variable_settings, variable_name)
+    val = variable_setting['func'](*args)
+    push_new_reading(val, variable_name)
+    # store_latest_value(variable_name, val)
 
-    if val > limit['top']:
-        respond_to_above(variable, val, limit)
-    elif val < limit['bottom']:
-        respond_to_below(variable, val, limit)
+    if val > variable_setting['upper']:
+        respond_to_above(variable_name, val, variable_setting)
+    elif val < variable_setting['lower']:
+        respond_to_below(variable_name, val, variable_setting)
 
 
 def respond_to_above(variable, val, limit):
-    print("%s above acceptable limit: %s" % (variable, limit['top']))
+    print("%s above acceptable limit: %s" % (variable, limit['upper']))
     action_notification(variable=variable, reading=val)
 
     if limit['above_action'] is not None:
@@ -28,7 +28,7 @@ def respond_to_above(variable, val, limit):
 
 
 def respond_to_below(variable, val, limit):
-    print("%s below acceptable limit: %s" % (variable, limit['bottom']))
+    print("%s below acceptable limit: %s" % (variable, limit['lower']))
     action_notification(variable=variable, reading=val)
 
     if limit['below_action'] is not None:
@@ -38,8 +38,9 @@ def respond_to_below(variable, val, limit):
 
 def main():
     try:
-        import sensors.limits
+        import sensors.variable_settings
         # run_update('stub', db)
+        run_update('room_motion')
         run_update('room_temp')
         run_update('cpu_temp')
         run_update('room_humidity')

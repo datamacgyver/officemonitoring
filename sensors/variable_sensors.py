@@ -38,6 +38,11 @@ def stub():
     val = randint(11, 40)
     return val
 
+@loop_average
+def movement():
+    humid, _ =
+    return humid
+
 
 @loop_average
 def cpu_temp():
@@ -64,5 +69,6 @@ def room_humidity():
 
 if __name__ == "__main__":
     print(str(stub()))
+    print(str(cpu_temp()))
     print(str(room_temp()))
     print(str(room_humidity()))
