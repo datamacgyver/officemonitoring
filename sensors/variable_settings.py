@@ -32,7 +32,8 @@ stub = {
     'func': m.stub,
     'above_action': None,
     'below_action': None,
-    'minutes_to_wait': 0
+    'minutes_to_wait': 0,
+    'record_outcome': 'always'
 }
 
 cpu_temp = {
@@ -41,7 +42,8 @@ cpu_temp = {
     'func': m.cpu_temp,
     'above_action': None,
     'below_action': None,
-    'minutes_to_wait': 15
+    'minutes_to_wait': 15,
+    'record_outcome': 'always'
 }
 
 room_temp = {
@@ -50,7 +52,8 @@ room_temp = {
     'func': m.room_temp,
     'below_action': 'shed heater on',
     'above_action': None,
-    'minutes_to_wait': 15
+    'minutes_to_wait': 15,
+    'record_outcome': 'always'
 }
 
 room_humidity = {
@@ -59,7 +62,8 @@ room_humidity = {
     'func': m.room_humidity,
     'below_action': None,
     'above_action': 'shed humidifier on',
-    'minutes_to_wait': 15
+    'minutes_to_wait': 15,
+    'record_outcome': 'always'
 }
 
 room_movement = {
@@ -68,7 +72,8 @@ room_movement = {
     'func': m.movement,
     'below_action': None,
     'above_action': 'shed light on',
-    'minutes_to_wait': 0
+    'minutes_to_wait': 0,
+    'record_outcome': 'if true'
 }
 
 

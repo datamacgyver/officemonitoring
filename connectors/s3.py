@@ -39,7 +39,6 @@ def _make_temp(a_dict, f_name='temp.json'):
 
 
 def push_new_reading(val, table, col=None):
-
     col = col if col else table
     val = str(val)
     time = get_time()
@@ -56,22 +55,6 @@ def record_hive_command(hive_command):
 
     f = _make_temp(out_dict)
     _upload_file(f, s3_bucket, object_name='hivecommands/%s.json' % time)
-
-# def store_latest_value(hive_command, val):
-#     cmd = "select count(*) from lastrecorded where variable = '%s'" % \
-#           hive_command
-#
-#     self._db_search(cmd)
-#     row_count = int(self.cursor.fetchone()[0])
-#
-#     if row_count > 0:
-#         cmd = "UPDATE lastrecorded SET timestamp = '%s', reading = %s " \
-#               " WHERE variable = '%s';" % (get_time(), val, hive_command)
-#         self._db_change(cmd)
-#     else:
-#         cmd = "insert into lastrecorded (timestamp, variable, reading) " \
-#               "values ('%s', '%s', %s)" % (get_time(), hive_command, val)
-#         self._db_change(cmd)
 
 
 if __name__ == "__main__":

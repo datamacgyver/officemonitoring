@@ -8,24 +8,36 @@ hive = HiveControls()
 
 
 def run_update(variable_name, *args):
+    print('Running %s' % variable_name)
     variable_setting = getattr(variable_settings, variable_name)
 
+    # Do we need to run variable?
     if not needs_to_run(variable_name, variable_setting['minutes_to_wait']):
+        print('Insufficient time since last check! Aborting %s' % variable_name)
         return
+    else:
+        val = variable_setting['func'](*args)
 
-    val = variable_setting['func'](*args)
-    push_new_reading(val, variable_name)
-    # store_latest_value(variable_name, val)
+    # Do we need to record the output?
+    update_rule = variable_setting['record_outcome'].tolower()
+    if update_rule == 'always':
+        push_new_reading(val, variable_name)
+    elif update_rule == 'if true' and val:
+        push_new_reading(val, variable_name)
+    elif update_rule == 'if false' and not val:
+        push_new_reading(val, variable_name)
 
+    # What do we need to do given the output?
     if val > variable_setting['upper']:
-        respond_to_above(variable_name, val, variable_setting)
+        _respond_to_above(variable_name, val, variable_setting)
     elif val < variable_setting['lower']:
-        respond_to_below(variable_name, val, variable_setting)
+        _respond_to_below(variable_name, val, variable_setting)
 
+    # Mark date of last run
     mark_ran(variable_name)
 
 
-def respond_to_above(variable, val, limit):
+def _respond_to_above(variable, val, limit):
     print("%s above acceptable limit: %s" % (variable, limit['upper']))
     action_notification(variable=variable, reading=val)
 
@@ -34,7 +46,7 @@ def respond_to_above(variable, val, limit):
         record_hive_command(limit['above_action'])
 
 
-def respond_to_below(variable, val, limit):
+def _respond_to_below(variable, val, limit):
     print("%s below acceptable limit: %s" % (variable, limit['lower']))
     action_notification(variable=variable, reading=val)
 
