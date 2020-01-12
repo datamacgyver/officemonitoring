@@ -107,3 +107,7 @@ venv.bak/
 secure/logons.py
 
 connectors/temp.json
+
+connectors/RobsCalendar.p
+
+*.pickle

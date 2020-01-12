@@ -1,27 +1,5 @@
-from datetime import datetime
-import requests
-from ics import Calendar
-
-from secure.logons import calendar_url
+from connectors.google_calendar import check_in_office
 from sensors import variable_sensors as m
-
-
-def check_in_office(day_start=6, day_end=17, weekday_start=0, weekday_end=4):
-    c = Calendar(requests.get(calendar_url).text)
-
-    hour_now = int(datetime.strftime(datetime.now(), '%H'))
-    weekday_now = datetime.today().weekday()
-    date_now = datetime.today().date()
-
-    in_london = any([event.begin.date() == date_now for event in c.events])
-    is_day = (hour_now >= day_start) and (hour_now <= day_end)
-    is_week = (weekday_now <= weekday_end) and (weekday_now >= weekday_start)
-
-    check_result = is_day and is_week and not in_london
-    print("Is rob in his office? %s" % check_result)
-
-    return check_result
-
 
 in_the_office = check_in_office()
 
@@ -66,10 +44,10 @@ room_humidity = {
     'record_outcome': 'always'
 }
 
-room_movement = {
+room_motion = {
     'upper': 1.0,
     'lower': 0.0,
-    'func': m.movement,
+    'func': m.motion,
     'below_action': None,
     'above_action': 'shed light on',
     'minutes_to_wait': 0,
