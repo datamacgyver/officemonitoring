@@ -3,9 +3,10 @@ from statistics import median
 from random import randint
 from time import sleep
 import Adafruit_DHT
+import RPi.GPIO as GPIO
 
 
-def loop_average(func):
+def loop_average(func): # todo move func to inner, add *args, **kwargs and parameterise important loop bits
     def wrapper_loop_average():
         results = []
         for i in range(0, 5):
@@ -20,7 +21,7 @@ def loop_average(func):
     return wrapper_loop_average
 
 
-def _read_temp_humidity_sensor():
+def _read_temp_humidity_sensor(pin_no=4):
     temp = None
     humid = None
     tries = 0
@@ -28,20 +29,34 @@ def _read_temp_humidity_sensor():
         tries += 1
         if tries > 5:
             raise OSError("Can't communicate with sensor")
-        humid, temp = Adafruit_DHT.read_retry(11, 4)
+        humid, temp = Adafruit_DHT.read_retry(11, pin_no)
 
     return float(humid), float(temp)
+
+
+def movement(pin_no=25, events_needed=1, num_seconds=60): # TODO: Adjust decorator and use with this too?
+
+    try:
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setup(pin_no, GPIO.IN)
+
+        events = 0
+        for i in range(0, num_seconds):
+            sleep(1)
+            events += GPIO.input(pin_no)
+            if events >= events_needed:
+                return 1
+    finally:
+        GPIO.cleanup()
+
+    return False
 
 
 @loop_average
 def stub():
     val = randint(11, 40)
     return val
-
-@loop_average
-def movement():
-    humid, _ =
-    return humid
 
 
 @loop_average
