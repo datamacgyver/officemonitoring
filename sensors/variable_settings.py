@@ -66,10 +66,10 @@ room_humidity = {
     'record_outcome': 'always'
 }
 
-room_motion = {
+room_movement = {
     'upper': 1.0,
     'lower': 0.0,
-    'func': m.motion,
+    'func': m.movement,
     'below_action': None,
     'above_action': 'shed light on',
     'minutes_to_wait': 0,
