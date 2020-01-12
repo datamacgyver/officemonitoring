@@ -1,13 +1,7 @@
 # pi setup
 ## getting it working on the pi  
 sudo apt-get install python3-pip  git  
-pip3 install boto3   
-pip3 install ics  
-
-## settng cron job
-crontab -e
-*/20 * * * * /usr/bin/python3 /home/pi/officemonitoring/send_updates.py
-for every 20 mins
+pip3 install -r requirements.txt
 
 ## installing temperature/humidity sensor code
 This is done in C but the package below wraps that up for you (phew!)
@@ -16,6 +10,11 @@ git clone https://github.com/adafruit/Adafruit_Python_DHT.git
 sudo python3 setup.py install
 
 for C code (and wiring) check [here](http://www.circuitbasics.com/how-to-set-up-the-dht11-humidity-sensor-on-the-raspberry-pi/)
+
+## settng cron job
+crontab -e
+*/1 * * * * /usr/bin/python3 /home/pi/officemonitoring/send_updates.py
+for every 1 min
 
 # Connecting to Hive
 ## First try with t'internet
