@@ -111,3 +111,5 @@ connectors/temp.json
 connectors/RobsCalendar.p
 
 *.pickle
+
+*.timer
