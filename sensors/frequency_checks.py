@@ -9,10 +9,12 @@ def _get_time_diff(var):
     return (now - time).min
 
 
-def check_if_run(var, min_diff):
+def needs_to_run(var, min_diff):
     diff = _get_time_diff(var)
     if diff > min_diff:
         return True
+    else:
+        return False
 
 
 def mark_ran(var):

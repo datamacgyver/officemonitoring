@@ -31,7 +31,8 @@ stub = {
     'lower': 25.0,
     'func': m.stub,
     'above_action': None,
-    'below_action': None
+    'below_action': None,
+    'minutes_to_wait': 0
 }
 
 cpu_temp = {
@@ -39,7 +40,8 @@ cpu_temp = {
     'lower': 5.0,
     'func': m.cpu_temp,
     'above_action': None,
-    'below_action': None
+    'below_action': None,
+    'minutes_to_wait': 15
 }
 
 room_temp = {
@@ -47,7 +49,8 @@ room_temp = {
     'lower': 17.0 if in_the_office else 3.0,
     'func': m.room_temp,
     'below_action': 'shed heater on',
-    'above_action': None
+    'above_action': None,
+    'minutes_to_wait': 15
 }
 
 room_humidity = {
@@ -55,7 +58,8 @@ room_humidity = {
     'lower': 0.0,
     'func': m.room_humidity,
     'below_action': None,
-    'above_action': 'shed humidifier on'
+    'above_action': 'shed humidifier on',
+    'minutes_to_wait': 15
 }
 
 room_movement = {
@@ -63,8 +67,10 @@ room_movement = {
     'lower': 0.0,
     'func': m.movement,
     'below_action': None,
-    'above_action': 'shed light on'
+    'above_action': 'shed light on',
+    'minutes_to_wait': 0
 }
+
 
 if __name__ == "__main__":
     print(stub)

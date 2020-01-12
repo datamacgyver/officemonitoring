@@ -1,6 +1,7 @@
 from connectors.s3 import push_new_reading, record_hive_command
 from connectors.HiveControls import HiveControls
 from connectors.ifttt import action_notification, error_notification
+from sensors.frequency_checks import needs_to_run, mark_ran
 from sensors import variable_settings
 
 hive = HiveControls()
@@ -8,6 +9,10 @@ hive = HiveControls()
 
 def run_update(variable_name, *args):
     variable_setting = getattr(variable_settings, variable_name)
+
+    if not needs_to_run(variable_name, variable_setting['minutes_to_wait']):
+        return
+
     val = variable_setting['func'](*args)
     push_new_reading(val, variable_name)
     # store_latest_value(variable_name, val)
@@ -16,6 +21,8 @@ def run_update(variable_name, *args):
         respond_to_above(variable_name, val, variable_setting)
     elif val < variable_setting['lower']:
         respond_to_below(variable_name, val, variable_setting)
+
+    mark_ran(variable_name)
 
 
 def respond_to_above(variable, val, limit):
