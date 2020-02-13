@@ -63,7 +63,7 @@ def main():
         run_update('room_motion')
         run_update('room_temp')
         run_update('cpu_temp')
-        run_update('room_humidity')
+        # run_update('room_humidity')
     except Exception as E:
         msg = str(E)
         error_notification(msg)

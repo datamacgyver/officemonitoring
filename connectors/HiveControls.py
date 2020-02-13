@@ -35,7 +35,6 @@ class HiveControls:
 
     def __init__(self):
         self.response = get_sign_on()
-        print("Signed on. Actions: %s" % self.response)
         self.token = self.response['token']
 
     def get_actions(self):
@@ -68,7 +67,6 @@ class HiveControls:
     def run_action_by_name(self, name):
         name = name.lower()
         actions = self.get_actions()
-        print("Actions aquired: %s" % actions)
         try:
             action = [x for x in actions if x['name'].lower() == name][0]
         except IndexError:
