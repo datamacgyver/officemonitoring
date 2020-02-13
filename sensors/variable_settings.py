@@ -34,15 +34,15 @@ room_temp = {
     'record_outcome': 'always'
 }
 
-# room_humidity = {
-#     'upper': 50.0 if in_the_office else 75.0,
-#     'lower': 0.0,
-#     'func': m.room_humidity,
-#     'below_action': None,
-#     'above_action': 'shed humidifier on',
-#     'minutes_to_wait': 15,
-#     'record_outcome': 'always'
-# }
+room_humidity = {
+    'upper': 110.0, #50.0 if in_the_office else 75.0,
+    'lower': 0.0,
+    'func': m.room_humidity,
+    'below_action': None,
+    'above_action': '',
+    'minutes_to_wait': 15,
+    'record_outcome': 'always'
+}
 
 room_motion = {
     'upper': 1.0,
@@ -59,4 +59,4 @@ if __name__ == "__main__":
     print(stub)
     print(cpu_temp)
     print(room_temp)
-    # print(room_humidity)
+    print(room_humidity)

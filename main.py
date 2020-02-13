@@ -50,7 +50,7 @@ def _run_action(variable, val, limit, typ):
         raise ValueError("typ must be above or below, not %s" % typ)
 
     if action is not None:
-        print("%s above acceptable limit: %s" % (variable, limit_val))
+        print("%s %s acceptable limit: %s" % (variable, action, limit_val))
         action_notification(variable=variable, reading=val)
         hive.run_action_by_name(action)
         record_hive_command(action)
@@ -63,7 +63,7 @@ def main():
         run_update('room_motion')
         run_update('room_temp')
         run_update('cpu_temp')
-        # run_update('room_humidity')
+        run_update('room_humidity')
     except Exception as E:
         msg = str(E)
         error_notification(msg)
