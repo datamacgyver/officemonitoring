@@ -59,4 +59,4 @@ if __name__ == "__main__":
     print(stub)
     print(cpu_temp)
     print(room_temp)
-    print(room_humidity)
+    # print(room_humidity)

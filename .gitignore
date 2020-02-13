@@ -113,3 +113,4 @@ connectors/RobsCalendar.p
 *.pickle
 
 *.timer
+connectors/office_check.txt
