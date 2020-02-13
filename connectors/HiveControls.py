@@ -35,6 +35,7 @@ class HiveControls:
 
     def __init__(self):
         self.response = get_sign_on()
+        print("Signed on. Actions: %s" % self.response)
         self.token = self.response['token']
 
     def get_actions(self):
@@ -67,7 +68,11 @@ class HiveControls:
     def run_action_by_name(self, name):
         name = name.lower()
         actions = self.get_actions()
-        action = [x for x in actions if x['name'].lower() == name][0]
+        print("Actions aquired: %s" % actions)
+        try:
+            action = [x for x in actions if x['name'].lower() == name][0]
+        except IndexError:
+            raise IndexError("Action not found in list from Hive, do you have the right name? \n%s" % actions)
         uid = action['id']
         self.run_action_by_uid(uid)
 
@@ -130,7 +135,7 @@ class HiveControls:
 if __name__ == "__main__":
     hive = HiveControls()
     # hive.run_action_by_uid(actions['shed_heater_on'])
-    hive.run_action_by_name('shed heater on')
+    hive.run_action_by_name('boost shed heater')
     print(hive.get_actions())
     print(hive.get_devices())
     hive.logout()

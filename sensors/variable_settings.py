@@ -28,7 +28,7 @@ room_temp = {
     'upper': 60.0,
     'lower': 17.0 if in_the_office else 3.0,
     'func': m.room_temp,
-    'below_action': 'shed heater on',
+    'below_action': 'boost shed heater',
     'above_action': None,
     'minutes_to_wait': 15,
     'record_outcome': 'always'
@@ -49,7 +49,7 @@ room_motion = {
     'lower': 0.0,
     'func': m.motion,
     'below_action': None,
-    'above_action': 'shed light on',
+    'above_action': 'shed lights on',
     'minutes_to_wait': 0,
     'record_outcome': 'if true'
 }
