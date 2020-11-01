@@ -1,3 +1,9 @@
+"""
+This module records the config for each sensor. What the source function is,
+how long to wait between runs, when to push the result to S3, what to do if
+over/under, etc, etc.
+"""
+
 from connectors.google_calendar import check_in_office
 from sensors import variable_sensors as m
 

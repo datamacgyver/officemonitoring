@@ -6,8 +6,26 @@ import Adafruit_DHT
 import RPi.GPIO as GPIO
 
 
+# TODO: THis really needs to run on its own as an always on process.
 def motion(pin_no=25, events_needed=1, num_seconds=60):
+    """
+    Check the motion sensor to see if there's movement
 
+    Parameters
+    ----------
+    pin_no : int
+        What pin number is the sensor on?
+    events_needed : int
+        Number of movement events needed in time period for an action
+        to occur.
+    num_seconds : Number of seconds to monitor for
+
+    Returns
+    -------
+    int
+        1 if movement recorded, 0 otherwise.
+
+    """
     try:
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -26,6 +44,12 @@ def motion(pin_no=25, events_needed=1, num_seconds=60):
 
 
 def loop_average(func):
+    """
+    Decorator that will actually run the given function multiple times and
+    take an median. This lets us smooth noisey sensors. Will run 5 times
+    and check that at least 60% are populated before calculation. The 60%
+    is given by the failure_boundary.
+    """
     def wrapper_loop_average():
         num_loops = 5
         failure_boundary = 0.60
@@ -48,6 +72,19 @@ def loop_average(func):
 
 
 def _read_temp_humidity_sensor(pin_no=4):
+    """
+    Wrapper to read the pi temp/humidity sensor
+
+    Parameters
+    ----------
+    pin_no : int
+        What pin is the sensor on?
+
+    Returns
+    -------
+    float, float
+        humitiy and temperature reading.
+    """
     temp = None
     humid = None
     tries = 0
@@ -62,12 +99,14 @@ def _read_temp_humidity_sensor(pin_no=4):
 
 @loop_average
 def stub():
+    """Testing function, just returns a random integer"""
     val = randint(11, 40)
     return val
 
 
 @loop_average
 def cpu_temp():
+    """Returns the CPU temp of the Pi, mainly used for testing."""
     bash_command = "/opt/vc/bin/vcgencmd measure_temp"
     process = subprocess.Popen(bash_command.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
@@ -79,12 +118,14 @@ def cpu_temp():
 
 @loop_average
 def room_temp():
+    """Reads the humidity sensor"""
     _, temp = _read_temp_humidity_sensor()
     return temp
 
 
 @loop_average
 def room_humidity():
+    """reads the temperature sensor"""
     humid, _ = _read_temp_humidity_sensor()
     return humid
 
