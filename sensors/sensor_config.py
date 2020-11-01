@@ -5,7 +5,7 @@ over/under, etc, etc.
 """
 
 from connectors.google_calendar import check_in_office
-from sensors import variable_sensors as m
+from sensors import sensor_runners as m
 
 in_the_office = check_in_office()
 

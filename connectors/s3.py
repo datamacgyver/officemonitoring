@@ -12,12 +12,12 @@ CLIENT = boto3.client(
 )
 
 
-# TODO: try/catches for failed Hive actions. What behaviour?
 def get_time():
     return str(datetime.strftime(datetime.now(), '%Y%m%dT%H%M%S'))
 
 
 def _upload_file(file_name, bucket, object_name=None):
+    """Upload a given file to S3"""
     # If S3 object_name was not specified, use file_name
     if object_name is None:
         object_name = file_name
@@ -30,15 +30,17 @@ def _upload_file(file_name, bucket, object_name=None):
     return True
 
 
+# TODO: Actually make a temporary file! Scratch that, write string directly to S3
 def _make_temp(a_dict, f_name='temp.json'):
     a_dict = str(a_dict)
     with open(f_name, 'w') as f:
         f.write(a_dict)
 
-    return 'temp.json'
+    return f_name
 
 
 def push_new_reading(val, table, col=None):
+    """Push a reading to S3, for example the shed temperature"""
     col = col if col else table
     val = str(val)
     time = get_time()
@@ -50,6 +52,7 @@ def push_new_reading(val, table, col=None):
 
 
 def record_hive_command(hive_command):
+    """Record a hive action on S3, for example turning the heating on"""
     time = get_time()
     out_dict = {'timestamp': time, ' hive_command':  hive_command}
 
