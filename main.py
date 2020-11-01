@@ -1,14 +1,16 @@
 from connectors.s3 import push_new_reading, record_hive_command
 from connectors.HiveControls import HiveControls
 from connectors.ifttt import action_notification, error_notification
-from sensors.frequency_checks import needs_to_run, note_this_run
-from sensors import variable_settings
+from sensors.timing_checks import needs_to_run, note_this_run
+from sensors import sensor_config
 
 hive = HiveControls()
 
 
 def run_update(variable_name, *args):
-    variable_setting = getattr(variable_settings, variable_name)
+    """Run an update for an office variable and decide what to do with the result"""
+
+    variable_setting = getattr(sensor_config, variable_name)
 
     # Do we need to run variable?
     if not needs_to_run(variable_name, variable_setting['minutes_to_wait']):
@@ -40,6 +42,7 @@ def run_update(variable_name, *args):
 
 
 def _run_action(variable, val, limit, typ):
+    """Given an action is stipulated in the update, what should be done?"""
     if typ == 'below':
         limit_val = limit['lower']
         action = limit['below_action']
@@ -58,7 +61,7 @@ def _run_action(variable, val, limit, typ):
 
 def main():
     try:
-        import sensors.variable_settings
+        import sensors.sensor_config
         # run_update('stub', db)
         run_update('room_motion')
         run_update('room_temp')
