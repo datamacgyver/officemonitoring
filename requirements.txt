@@ -1,6 +1,6 @@
 pyodbc==4.0.16
 ics==0.4
 requests==2.20.0
-certifi==2018.8.24
+certifi==2022.12.7
 RPi.GPIO==0.7.0
 boto3==1.24.3
